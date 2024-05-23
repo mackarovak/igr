@@ -38,21 +38,57 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $conn->close();
 }
-include 'base.html';
 ?>
 
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Вход</title>
-</head>
-<body>
-    <div style="text-align: center;">
-    <h2>Вход</h2>
+<?php
+$page_title = "Вход";
+$site_title = "Вход на сайт";
 
+ob_start();
+?>
+
+<style>
+     body {
+        margin: 0;
+        padding: 0;
+    }
+    .center {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* Изменено на flex-start */
+        height: 100vh;
+    }
+    .register-form {
+        width: 350px; /* Увеличенная ширина формы */
+        padding: 30px; /* Увеличенный внутренний отступ */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #FFF; /* Белый фон */
+        text-align: center;
+        margin-top: 50px; /* Отступ сверху */
+    }
+    .register-form input[type="text"],
+    .register-form input[type="password"] {
+        padding: 10px;
+        margin: 3px 0; /* Уменьшенные отступы */
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+    .register-form button {
+        padding: 10px 20px;
+        margin-top: 10px; /* Отступ над кнопкой */
+        border: none;
+        border-radius: 5px;
+        background-color: #E4717A; /* Цвет кнопки */
+        color: #fff;
+        font-weight: bold;
+        cursor: pointer;
+    }
+</style>
+
+<div class="center">
+<div class="register-form">
+        <h2>Вход</h2>
         <?php if (isset($error)) {
             echo "<p style='color: red;'>$error</p>";
         } ?>
@@ -62,5 +98,10 @@ include 'base.html';
             <button type="submit">Войти</button>
         </form>
     </div>
-</body>
-</html>
+</div>
+
+<?php
+$body_content = ob_get_clean();
+$footer_content = "© 2024 Салон красоты";
+include 'base.html';
+?>

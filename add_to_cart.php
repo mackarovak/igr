@@ -8,14 +8,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['cart'] = [];
     }
 
-    // Добавление товара в корзину
     $_SESSION['cart'][] = [
         'id' => $data['id'],
         'name' => $data['name'],
         'price' => $data['price']
     ];
 
-    $response = ['message' => 'Товар успешно добавлен в корзину'];
+    $cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
+    $cart[] = [
+        'id' => $data['id'],
+        'name' => $data['name'],
+        'price' => $data['price']
+    ];
+    setcookie('cart', json_encode($cart), time() + 3600, '/');
+
+    $response = ['message' => 'Услуга добавлена в корзину'];
     echo json_encode($response);
 }
 ?>

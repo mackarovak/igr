@@ -7,27 +7,39 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #FFA500; /* Яркий цвет фона */
+            background-color: #FFD1DC; /* Бежевый цвет фона */
             margin: 0;
             padding: 0;
         }
 
         .menu {
-            background-color: #FFA500;
+            background-color: #FFD1DC; /* Бежевый цвет фона */
             color: #fff;
             padding: 10px;
             text-align: center;
         }
 
-        .menu a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
+        .menu h1 {
+            margin: 0;
         }
+
+       .menu a {
+    margin-top: 20px;
+    text-decoration: none;
+    color: #fff;
+    background-color: #E4717A;
+    padding: 10px 20px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.menu a:hover {
+    background-color: #FF6B90; /* Изменение цвета при наведении */
+}
 
         .container {
             display: flex;
-            background-color: #FFA500; /* Яркий цвет фона */
+            background-color: #FFD1DC; /* Бежевый цвет фона */
             justify-content: space-around;
             flex-wrap: wrap;
             max-width: 1200px;
@@ -59,25 +71,28 @@
         }
 
         footer {
-            background-color: #333;
+            background-color:  #E4717A;
             color: #fff;
             text-align: center;
             padding: 10px;
             margin-top: 20px;
+        }
+
+        .logo img {
+            width: 3px; /* Изменяем размер логотипа */
+            height: auto;
         }
     </style>
 </head>
 <body>
     <?php 
     
-$page_title = "Магазин игрушек";
-$site_title = "Добро пожаловать в наш магазин игрушек!";
-$menu_content = "<a href='main.php'>Главная</a> | <a href='contacts.php'>Контакты</a> | <a href='register.php'>Регистрация
-    | <a href='login.php'>Вход </a>";
+$page_title = "Салон красоты";
+$site_title = "Салон красоты";
+$menu_content = "<a href='glav.php'>Главная</a> | <a href='main.php' class='button'>Услуги</a> | <a href='ser.php' class='button'>Сертификат</a> | <a href='sotr.php' class='button'>Наши сотрудники</a> | <a href='register.php' class='button'>Регистрация</a> | <a href='login.php' class='button'>Вход</a> | <a href='otzyv.php' class='button'>Отзывы</a> | <a href='contacts.php' class='button'>Контакты</a>";
 ?>
 
 <div class="menu">
-    <h1><?php echo $site_title; ?></h1>
     <div>
         <p>
             <?php echo $menu_content; ?>
@@ -91,4 +106,4 @@ $menu_content = "<a href='main.php'>Главная</a> | <a href='contacts.php'>
         <?php echo $footer_content; ?>
     </footer>
 </body>
-</html>
+</html> 

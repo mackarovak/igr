@@ -1,0 +1,20 @@
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.product {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.product-info {
+    flex: 1;
+    padding: 10px;
+}
+
+.product-image img {
+    max-width: 200px;
+    margin-left: 20px;
+}

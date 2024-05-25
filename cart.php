@@ -1,31 +1,48 @@
 <?php
+// Устанавливаем время жизни сессии в секундах (например, 1 неделя)
+$session_lifetime = 604800; // 60 секунд * 60 минут * 24 часа * 7 дней
+
+// Устанавливаем время жизни cookie сессии того же пользователя (например, 0 - до закрытия браузера)
+$cookie_lifetime = 0;
+
+session_set_cookie_params($session_lifetime, '/', '', false, true);
+ini_set('session.gc_maxlifetime', $session_lifetime);
+
 session_start();
+
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php"); // Перенаправляем на страницу входа, если пользователь не авторизован
+    exit();
+}
 
 $page_title = "Корзина";
 $site_title = "Салон красоты - Корзина";
 
-// Функция для удаления продукта из корзины
 function removeFromCart($productId) {
     if(isset($_SESSION['cart'])) {
         foreach ($_SESSION['cart'] as $key => $product) {
             if ($product['id'] == $productId) {
                 unset($_SESSION['cart'][$key]);
-                $_SESSION['cart'] = array_values($_SESSION['cart']); // Сбрасываем ключи массива корзины
+                $_SESSION['cart'] = array_values($_SESSION['cart']);
                 break;
             }
         }
     }
 }
 
-// Функция для оформления заказа
 function placeOrder() {
-    // Здесь можно добавить логику для сохранения заказа в базе данных или отправки уведомления о заказе
-    // Например, можно создать таблицу "orders" с информацией о заказе и продуктах
-    // И очистить корзину после успешного оформления заказа
+    $_SESSION['ordered_items'] = $_SESSION['cart'];
     $_SESSION['cart'] = [];
 }
 
-// Проверка наличия корзины в сессии
+function calculateTotalPrice() {
+    $totalPrice = 0;
+    foreach ($_SESSION['cart'] as $product) {
+        $totalPrice += $product['price'];
+    }
+    return $totalPrice;
+}
+
 if (!isset($_SESSION['cart'])) {
     $_SESSION['cart'] = [];
 }
@@ -49,23 +66,31 @@ if (empty($_SESSION['cart'])) {
         echo "</div>";
     }
     echo "</div>";
-    
+    $totalPrice = calculateTotalPrice();
+    echo "<p style='text-align: center; margin-top: 10px;'>Общая стоимость: $totalPrice</p>";
     echo "<form method='post' style='text-align: center; margin-top: 20px;'>";
+    echo "<input type='submit' name='remove_all' value='Удалить все товары' class='pink-button'>";
+    echo "<br>"; 
+    echo "<br>";
     echo "<input type='submit' name='place_order' value='Оформить заказ' class='pink-button'>";
     echo "</form>";
 }
 
-// Проверка на действие по оформлению заказа
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     placeOrder();
     echo "<p style='text-align: center; margin-top: 20px; color: #E4717A; font-size: 18px;'>Вы успешно оформили заказ. Спасибо за покупку!</p>";
 }
 
-// Проверка на действие по удалению продукта из корзины
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_all'])) {
+    $_SESSION['cart'] = [];
+    header("Location: {$_SERVER['PHP_SELF']}");
+    exit;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_id'])) {
     $productId = $_POST['remove_id'];
     removeFromCart($productId);
-    header("Location: {$_SERVER['PHP_SELF']}"); // Перенаправление после удаления продукта
+    header("Location: {$_SERVER['PHP_SELF']}");
     exit;
 }
 

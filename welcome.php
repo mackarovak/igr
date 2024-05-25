@@ -1,5 +1,9 @@
 <?php
 session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: login.php");
+    exit;
+}
 
 // Подключение к базе данных
 $servername = "mysql";
@@ -28,15 +32,47 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['new_password'])) {
     }
 }
 
+if (isset($_SESSION['ordered_items'])) {
+    $ordered_items = $_SESSION['ordered_items'];
+} else {
+    $ordered_items = [];
+}
+
+if (isset($_POST['add_to_cart'])) {
+    // Добавление товара в корзину
+    $product_id = $_POST['product_id'];
+    $product_name = $_POST['product_name'];
+    $product_price = $_POST['product_price'];
+
+    $ordered_items[] = array('id' => $product_id, 'name' => $product_name, 'price' => $product_price);
+    $_SESSION['ordered_items'] = $ordered_items;
+}
+
 if (isset($_POST['logout'])) {
-    session_unset();
-    session_destroy();
+    unset($_SESSION['username']);
     header("Location: login.php");
     exit;
 }
 
 ob_start();
 ?>
+
+
+<div style="background-color: white; padding: 20px; margin-top: 20px; text-align: center;">
+    <?php
+    if (!empty($ordered_items)) {
+        echo "<h2 style='color: #E4717A;'>Ваши заказанные товары:</h2>";
+        echo "<ul style='list-style-type: none; padding: 0;'>";
+        foreach ($ordered_items as $product) {
+            echo "<li>{$product['name']} - Цена: {$product['price']}</li>";
+        }
+        echo "</ul>";
+    } else {
+        echo "<p style='color: #E4717A; font-size: 24px;'>Вы еще не сделали заказ</p>";
+    }
+    ?>
+</div>
+
 <style>
      body {
         margin: 0;

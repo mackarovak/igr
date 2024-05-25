@@ -14,13 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'price' => $data['price']
     ];
 
-    $cart = isset($_COOKIE['cart']) ? json_decode($_COOKIE['cart'], true) : [];
-    $cart[] = [
-        'id' => $data['id'],
-        'name' => $data['name'],
-        'price' => $data['price']
-    ];
-    setcookie('cart', json_encode($cart), time() + 3600, '/');
+    // Сохранение данных корзины в сессию
+    $_COOKIE['cart'] = json_encode($_SESSION['cart']);
+    setcookie('cart', $_COOKIE['cart'], time() + 3600, '/');
 
     $response = ['message' => 'Услуга добавлена в корзину'];
     echo json_encode($response);

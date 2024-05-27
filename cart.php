@@ -11,8 +11,7 @@ ini_set('session.gc_maxlifetime', $session_lifetime);
 session_start();
 
 if (!isset($_SESSION['username'])) {
-    header("Location: login.php"); // Перенаправляем на страницу входа, если пользователь не авторизован
-    exit();
+    $message = "Пожалуйста, авторизуйтесь, чтобы добавлять товары в корзину";
 }
 
 $page_title = "Корзина";
@@ -49,8 +48,8 @@ if (!isset($_SESSION['cart'])) {
 
 ob_start();
 
-if (empty($_SESSION['cart'])) {
-    echo "<p style='text-align: center; color: #E4717A; font-size: 24px;'>Ваша корзина пуста</p>";
+if (isset($message)) {
+    echo "<p style='text-align: center; color: #E4717A; font-size: 24px;'>$message</p>";
 } else {
     echo "<h2 style='text-align: center; color: #E4717A;'>Ваша корзина:</h2>";
     echo "<div style='display: flex; flex-wrap: wrap; justify-content: center;'>";
@@ -98,6 +97,7 @@ $body_content = ob_get_clean();
 $footer_content = "© 2024 Салон красоты";
 include 'base.html';
 ?>
+
 <style>
     /* Стили для кнопок */
     .pink-button {

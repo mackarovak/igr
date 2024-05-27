@@ -56,6 +56,14 @@ $create_orders_table = "CREATE TABLE orders (
 )";
 $conn->query($create_orders_table);
 
+$create_resevations_table = "CREATE TABLE reservations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    product_name VARCHAR(255) NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    customer_name VARCHAR(255) NOT NULL,
+)";
+$conn->query($create_resevations_table);
+
 $sql = "SELECT COUNT(*) as count FROM products";
 $result = $conn->query($sql);
 $row = $result->fetch_assoc();

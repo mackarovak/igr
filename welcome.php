@@ -54,8 +54,30 @@ if (isset($_POST['logout'])) {
     exit;
 }
 
+// Получение и отображение данных из таблицы reservations
+$reservations_query = "SELECT * FROM reservations WHERE customer_name = '{$_SESSION['username']}'";
+$reservations_result = $conn->query($reservations_query);
+
 ob_start();
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Заказы</title>
+</head>
+<body>
+    <h1>Ваши заказы:</h1>
+    <?php
+    if ($reservations_result->num_rows > 0) {
+        while($row = $reservations_result->fetch_assoc()) {
+            echo "<p>Название товара: " . $row["product_name"] . " - Цена: " . $row["price"] . "</p>";
+        }
+    } else {
+        echo "<p>У вас пока нет заказов.</p>";
+    }
+    ?>
+</body>
+</html>
 
 
 <div style="background-color: white; padding: 20px; margin-top: 20px; text-align: center;">
